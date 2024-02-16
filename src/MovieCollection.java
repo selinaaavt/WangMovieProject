@@ -10,14 +10,16 @@ public class MovieCollection {
 
 
     public MovieCollection() {
+        movieCollection = new ArrayList<>();
+        importGoods();
         scanner = new Scanner(System.in);
         menuOptions();
-        movieCollection = new ArrayList<>();
     }
     public void importGoods() {
         try {
             File myFile = new File("src\\movies_data.csv");
             Scanner fileScanner = new Scanner(myFile);
+            fileScanner.nextLine();
             while (fileScanner.hasNext()) {
                 String data = fileScanner.nextLine();
                 String[] splitData = data.split(",");
@@ -26,15 +28,13 @@ public class MovieCollection {
                 String director = splitData[2];
                 String overview = splitData[3];
                 int runtime = Integer.parseInt(splitData[4]);
-                Double userRating = Double.parseDouble(splitData[5]);
+                double userRating = Double.parseDouble(splitData[5]);
                 Movie newMovie = new Movie(title, cast, director, overview, runtime, userRating);
                 movieCollection.add(newMovie);
             }
         } catch (IOException exception) {
             System.out.println(exception.getMessage());
         }
-
-
     }
     public void menuOptions() {
         System.out.println("Welcome to the movie collection!");
@@ -78,7 +78,7 @@ public class MovieCollection {
             moviesThatMatch = sortTheArray(moviesThatMatch);
             for (int x = 0 ; x < moviesThatMatch.size(); x++) {
                 int smth = x+1;
-                System.out.println(smth + ". " + moviesThatMatch.get(x));
+                System.out.println(smth + ". " + moviesThatMatch.get(x).getTitle());
             }
             System.out.println("What movie would you like to learn more about?");
             System.out.print("Enter number: ");
@@ -90,7 +90,6 @@ public class MovieCollection {
             System.out.println("Overview: " + moviesThatMatch.get(chosenNumber - 1).getOverview());
             System.out.println("User rating: " + moviesThatMatch.get(chosenNumber - 1).getUserRating());
         }
-        menuOptions();
     }
 
     public ArrayList<Movie> sortTheArray(ArrayList<Movie> words) {
@@ -129,12 +128,11 @@ public class MovieCollection {
             System.out.print("Enter number: ");
             int chosenNumber = scanner.nextInt();
             System.out.println("Title: " + moviesThatMatchTheCast.get(chosenNumber - 1).getTitle());
-            System.out.println("Runtime: " + moviesThatMatchTheCast.get(chosenNumber - 1).getRuntime());
+            System.out.println("Runtime: " + moviesThatMatchTheCast.get(chosenNumber - 1).getRuntime() + " minutes");
             System.out.println("Directed by: " + moviesThatMatchTheCast.get(chosenNumber - 1).getDirector());
             System.out.println("Cast: " + moviesThatMatchTheCast.get(chosenNumber - 1).getCast());
             System.out.println("Overview: " + moviesThatMatchTheCast.get(chosenNumber - 1).getOverview());
             System.out.println("User rating: " + moviesThatMatchTheCast.get(chosenNumber - 1).getUserRating());
         }
-        menuOptions();
     }
 }

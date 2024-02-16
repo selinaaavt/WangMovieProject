@@ -105,34 +105,60 @@ public class MovieCollection {
         }
         return words;
     }
+    public ArrayList<String> sortArray(ArrayList<String> words) {
+        for (int i = 1; i < words.size(); i++) {
+            int x = i;
+            String bruh = words.get(i);
+            while (x != 0 && bruh.compareTo(words.get(x-1)) < 0) {
+                words.set(x, words.get(x-1));
+                x--;
+            }
+            words.set(x, bruh);
+        }
+        return words;
+    }
     public void searchCast() { // not done
-        ArrayList<Movie> moviesThatMatchTheCast = new ArrayList<>();
+        ArrayList<String> castNames = new ArrayList<>();
+        ArrayList<String> matchingCast = new ArrayList<>();
         System.out.print("Enter a person to search for (first or last name): ");
         String search = scanner.nextLine();
         int howMany = 0;
-        for (int i =0; i < movieCollection.size(); i++) {
-            if (movieCollection.get(i).getCast().toLowerCase().indexOf(search.toLowerCase()) >= 0) {
-                moviesThatMatchTheCast.add(movieCollection.get(i));
-                howMany++;
+        for (int i = 0; i < movieCollection.size(); i++) {
+            String castOfAMovie = movieCollection.get(i).getCast();
+            String[] splitData = castOfAMovie.split("\\|");
+            for (int x = 0; x < splitData.length; x++) {
+                castNames.add(splitData[x]);
+            }
+        }
+        for (int i =0; i < castNames.size(); i++) {
+            if (castNames.get(i).toLowerCase().indexOf(search.toLowerCase()) >= 0) {
+                for (int x =0; x < matchingCast.size(); x++) {
+                    if (!(matchingCast.get(x).toLowerCase().equals(castNames.get(i).toLowerCase()))) {
+                        matchingCast.add(castNames.get(i));
+                        howMany++;
+                    }
+                }
             }
         }
         if (howMany == 0 ) {
-            System.out.println("No movies titles match that search term!");
+            System.out.println("No results match your search!");
         } else {
-            moviesThatMatchTheCast = sortTheArray(moviesThatMatchTheCast);
-            for (int x = 0 ; x < moviesThatMatchTheCast.size(); x++) {
+            matchingCast= sortArray(matchingCast);
+            for (int x = 0 ; x < matchingCast.size(); x++) {
                 int smth = x+1;
-                System.out.println(smth + ". " + moviesThatMatchTheCast.get(x));
+                System.out.println(smth + ". " + matchingCast.get(x));
             }
-            System.out.println("What movie would you like to learn more about?");
+            System.out.println("Which would you like to see movies about?");
             System.out.print("Enter number: ");
             int chosenNumber = scanner.nextInt();
-            System.out.println("Title: " + moviesThatMatchTheCast.get(chosenNumber - 1).getTitle());
-            System.out.println("Runtime: " + moviesThatMatchTheCast.get(chosenNumber - 1).getRuntime() + " minutes");
-            System.out.println("Directed by: " + moviesThatMatchTheCast.get(chosenNumber - 1).getDirector());
-            System.out.println("Cast: " + moviesThatMatchTheCast.get(chosenNumber - 1).getCast());
-            System.out.println("Overview: " + moviesThatMatchTheCast.get(chosenNumber - 1).getOverview());
-            System.out.println("User rating: " + moviesThatMatchTheCast.get(chosenNumber - 1).getUserRating());
+            for (int x = 0; x < movieCollection.size(); x++) {
+                int smth = 1;
+                if (movieCollection.get(x).getCast().indexOf(matchingCast.get(chosenNumber - 1)) >= 0) {
+                    System.out.println(smth + ". " + movieCollection.get(x).getTitle());
+                    smth++;
+                }
+            }
+
         }
     }
 }

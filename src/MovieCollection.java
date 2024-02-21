@@ -132,10 +132,14 @@ public class MovieCollection {
         }
         for (int i =0; i < castNames.size(); i++) {
             if (castNames.get(i).toLowerCase().indexOf(search.toLowerCase()) >= 0) {
-                for (int x =0; x < matchingCast.size(); x++) {
-                    if (!(matchingCast.get(x).toLowerCase().equals(castNames.get(i).toLowerCase()))) {
-                        matchingCast.add(castNames.get(i));
-                        howMany++;
+                if (matchingCast.size() == 0) {
+                    matchingCast.add(castNames.get(i));
+                } else {
+                    for (int x = 0; x < matchingCast.size(); x++) {
+                        if (!(matchingCast.get(x).toLowerCase().equals(castNames.get(i).toLowerCase()))) {
+                            matchingCast.add(castNames.get(i));
+                            howMany++;
+                        }
                     }
                 }
             }

@@ -10,9 +10,9 @@ public class MovieCollection {
 
 
     public MovieCollection() {
+        scanner = new Scanner(System.in);
         movieCollection = new ArrayList<>();
         importGoods();
-        scanner = new Scanner(System.in);
         menuOptions();
     }
     public void importGoods() {
@@ -39,7 +39,6 @@ public class MovieCollection {
     public void menuOptions() {
         System.out.println("Welcome to the movie collection!");
         String menuOption = "";
-
 
         while (!menuOption.equals("q")) {
             System.out.println("------------ Main Menu ----------");
@@ -89,6 +88,7 @@ public class MovieCollection {
             System.out.println("Cast: " + moviesThatMatch.get(chosenNumber - 1).getCast());
             System.out.println("Overview: " + moviesThatMatch.get(chosenNumber - 1).getOverview());
             System.out.println("User rating: " + moviesThatMatch.get(chosenNumber - 1).getUserRating());
+            scanner.nextLine();
         }
     }
 
@@ -151,6 +151,7 @@ public class MovieCollection {
             System.out.println("Which would you like to see movies about?");
             System.out.print("Enter number: ");
             int chosenNumber = scanner.nextInt();
+            scanner.nextLine();
             for (int x = 0; x < movieCollection.size(); x++) {
                 int smth = 1;
                 if (movieCollection.get(x).getCast().indexOf(matchingCast.get(chosenNumber - 1)) >= 0) {

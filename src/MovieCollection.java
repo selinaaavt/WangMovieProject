@@ -83,7 +83,7 @@ public class MovieCollection {
             System.out.print("Enter number: ");
             int chosenNumber = scanner.nextInt();
             System.out.println("Title: " + moviesThatMatch.get(chosenNumber - 1).getTitle());
-            System.out.println("Runtime: " + moviesThatMatch.get(chosenNumber - 1).getRuntime());
+            System.out.println("Runtime: " + moviesThatMatch.get(chosenNumber - 1).getRuntime() + " minutes");
             System.out.println("Directed by: " + moviesThatMatch.get(chosenNumber - 1).getDirector());
             System.out.println("Cast: " + moviesThatMatch.get(chosenNumber - 1).getCast());
             System.out.println("Overview: " + moviesThatMatch.get(chosenNumber - 1).getOverview());
@@ -130,21 +130,25 @@ public class MovieCollection {
                 castNames.add(splitData[x]);
             }
         }
-        for (int i =0; i < castNames.size(); i++) {
-            if (castNames.get(i).toLowerCase().indexOf(search.toLowerCase()) >= 0) {
+        for (int i = 0; i < castNames.size(); i++) {
+            if (castNames.get(i).toLowerCase().indexOf(search.toLowerCase()) != -1) {
+                boolean found = false;
                 if (matchingCast.size() == 0) {
                     matchingCast.add(castNames.get(i));
                 } else {
                     for (int x = 0; x < matchingCast.size(); x++) {
-                        if (!(matchingCast.get(x).toLowerCase().equals(castNames.get(i).toLowerCase()))) {
-                            matchingCast.add(castNames.get(i));
-                            howMany++;
+                        if (castNames.get(i).equalsIgnoreCase(matchingCast.get(x))) {
+                            found = true;
+                            break;
                         }
+                    }
+                    if (found == false) {
+                        matchingCast.add(castNames.get(i));
                     }
                 }
             }
         }
-        if (howMany == 0 ) {
+        if (matchingCast.size() == 0) {
             System.out.println("No results match your search!");
         } else {
             matchingCast= sortArray(matchingCast);
@@ -156,14 +160,27 @@ public class MovieCollection {
             System.out.print("Enter number: ");
             int chosenNumber = scanner.nextInt();
             scanner.nextLine();
+            ArrayList<Movie> matchingMovies = new ArrayList<>();
             for (int x = 0; x < movieCollection.size(); x++) {
-                int smth = 1;
                 if (movieCollection.get(x).getCast().indexOf(matchingCast.get(chosenNumber - 1)) >= 0) {
-                    System.out.println(smth + ". " + movieCollection.get(x).getTitle());
-                    smth++;
+                   matchingMovies.add(movieCollection.get(x));
                 }
             }
-
+            matchingMovies = sortTheArray(matchingMovies);
+            for (int i = 0; i < matchingMovies.size(); i ++) {
+                int smth = i+1;
+                System.out.println(smth + ". " + matchingMovies.get(i).getTitle());
+            }
+            System.out.println("What movie would you like to learn more about?");
+            System.out.print("Enter number: ");
+            int chosenNum = scanner.nextInt();
+            System.out.println("Title: " + matchingMovies.get(chosenNum - 1).getTitle());
+            System.out.println("Runtime: " + matchingMovies.get(chosenNum - 1).getRuntime() + " minutes");
+            System.out.println("Directed by: " + matchingMovies.get(chosenNum - 1).getDirector());
+            System.out.println("Cast: " + matchingMovies.get(chosenNum - 1).getCast());
+            System.out.println("Overview: " + matchingMovies.get(chosenNum - 1).getOverview());
+            System.out.println("User rating: " + matchingMovies.get(chosenNum - 1).getUserRating());
+            scanner.nextLine();
         }
     }
 }
